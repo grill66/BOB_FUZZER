@@ -1,0 +1,29 @@
+{
+
+  "exe_name":"C:\\Program Files\\Hnc\\Office NEO\\HOffice96\\Bin\\HCell.exe",
+
+  "seed_dirname": ".\\seeds",
+  "work_dirname": ".\\work",
+  "crashes_dirname": ".\\crashes",
+
+  "iteration_per_seed": 3,
+
+  "fixed_offset_list": [
+    {
+      "start": 0,
+      "end": 1024
+    },
+    {
+      "start": 2048,
+      "end" : 4096
+    }
+  ],
+
+  "argument" : "C:\\Users\\user\\Desktop\\sample3_2.cell",
+  "waitseconds":3,
+  "mut_type" : 0
+
+}
+
+
+
