@@ -27,16 +27,9 @@ def GetMD5HashFromFile(file_name):
     return hash.hexdigest()
 
 def GetMD5HashFromString(string):
-
     return hashlib.md5(string).hexdigest()
 
-#def GetMD5HashFromStream(stream):
-#    hash = hashlib.md5()
-#
-#    for block in iter(lambda: stream)
 
-
-# Read full binary data from filename
 def GetStream(filename):
     fp = open(filename, "rb")
     stream = fp.read()

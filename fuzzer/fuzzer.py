@@ -47,14 +47,15 @@ class fuzzer():
 
     def ReadConfig(self): # Read configuration from JSON format file
 
-        self.exe_name           = GetValueFromConfigFile("exe_name")
-        self.iteration_per_seed = GetValueFromConfigFile("iteration_per_seed")
-        self.seed_dirname       = GetValueFromConfigFile("seed_dirname")
-        self.work_dirname       = GetValueFromConfigFile("work_dirname")
-        self.fixed_offset_list  = GetValueFromConfigFile("fixed_offset_list")
-        self.argument           = GetValueFromConfigFile("argument")
-        self.waitseconds        = GetValueFromConfigFile("waitseconds")
-        self.mut_type           = GetValueFromConfigFile("mut_type")
+        self.exe_name               = GetValueFromConfigFile("exe_name")
+        self.iteration_per_seed     = GetValueFromConfigFile("iteration_per_seed")
+        self.seed_dirname           = GetValueFromConfigFile("seed_dirname")
+        self.work_dirname           = GetValueFromConfigFile("work_dirname")
+        self.fixed_offset_list      = GetValueFromConfigFile("fixed_offset_list")
+        self.argument               = GetValueFromConfigFile("argument")
+        self.waitseconds            = GetValueFromConfigFile("waitseconds")
+        self.mut_type               = GetValueFromConfigFile("mut_type")
+        self.mutation_block_size    = GetValueFromConfigFile("mutation_block_size")
 
         return
 
@@ -120,7 +121,7 @@ class fuzzer():
             while self.fuzzer_status == CRASH_OCCURED:
                 time.sleep(1)
 
-        # TODO : resotore below statement - Delete mutated-file
+        # TODO : restore below statement - Delete mutated-file
         # self.mut_class.DeleteMutatedFile()
 
         self.mut_class = None
@@ -152,7 +153,7 @@ class fuzzer():
                 PrintLog(" done.\n")
                 PrintLog("[*] Starting debugger...\n")
 
-                # TODO : Revise
+                # TODO : Revise - improve flexibiliy
                 self.argument = self.work_dirname + "\\" + self.mut_class.mutated_filename
 
                 dbg_thread = threading.Thread(target = self.ProcessDebugger)
