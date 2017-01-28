@@ -19,6 +19,10 @@ DBG_RUNNING         = 0x1
 CRASH_OCCURED       = 0x2
 
 
+MONITOR_NOT_RUNNING = 0x0
+MONITOR_RUNNING     = 0x1
+
+
 class fuzzer():
 
     def __init__(self):
@@ -35,9 +39,8 @@ class fuzzer():
         self.iteration = 0
         self.targetpid = None
 
-        self.fuzzer_status = DBG_NOT_RUNNING
-        self.inputfilename = ""
-        self.inputfilepath = ""
+        self.DBG_status         = DBG_NOT_RUNNING
+        self.monitor_status     = MONITOR_NOT_RUNNING
 
         self.seed_stream = ""
 
@@ -49,8 +52,8 @@ class fuzzer():
 
         self.exe_name               = GetValueFromConfigFile("exe_name")
         self.iteration_per_seed     = GetValueFromConfigFile("iteration_per_seed")
-        self.seed_dirname           = GetValueFromConfigFile("seed_dirname")
-        self.work_dirname           = GetValueFromConfigFile("work_dirname")
+        self.seed_dirname           = BackSlashWrapper(GetValueFromConfigFile("seed_dirname"))
+        self.work_dirname           = BackSlashWrapper(GetValueFromConfigFile("work_dirname"))
         self.fixed_offset_list      = GetValueFromConfigFile("fixed_offset_list")
         self.argument               = GetValueFromConfigFile("argument")
         self.waitseconds            = GetValueFromConfigFile("waitseconds")
@@ -59,14 +62,14 @@ class fuzzer():
 
         return
 
-    def ErrorHandler(self, dbg):
+    def ExceptionHandler(self, dbg):
 
         if dbg.dbg.u.Exception.dwFirstChance:
             return DBG_EXCEPTION_NOT_HANDLED
 
         print "Crash"
 
-        self.fuzzer_status = CRASH_OCCURED
+        self.DBG_status = CRASH_OCCURED
 
         ## Record Crash Information
         crash_bin = utils.crash_binning.crash_binning()
@@ -80,25 +83,26 @@ class fuzzer():
         os.mkdir(".\\crashes\\" + crash_dirname)
 
         # Save Crash Info
-        crashinfo_fp = open("crashes\\" + crash_dirname + "\\" + self.inputfilename + ".log", "w+")
+        crashinfo_fp = open("crashes\\" + crash_dirname + "\\" + self.mut_class.mutated_filename.split('.')[0] + ".log", "wb")
         crashinfo_fp.write(self.crash)
         crashinfo_fp.close()
 
         # Save Crash-causing file
-        shutil.copy(self.inputfilepath + self.inputfilename, "crashes\\" + crash_dirname + "\\" + self.inputfilename)
+        shutil.copy(self.work_dirname + self.mut_class.mutated_filename, "crashes\\" + crash_dirname + "\\" + self.mut_class.mutated_filename)
 
         self.dbg.terminate_process()
-        self.fuzzer_status = DBG_NOT_RUNNING
+        self.DBG_status = DBG_NOT_RUNNING
         self.targetpid = None
 
         return DBG_EXCEPTION_NOT_HANDLED
 
     def ProcessDebugger(self):
 
-        self.fuzzer_status = DBG_RUNNING
+        self.DBG_status = DBG_RUNNING
+
         self.dbg = pydbg()
 
-        self.dbg.set_callback(EXCEPTION_ACCESS_VIOLATION, self.ErrorHandler)
+        self.dbg.set_callback(EXCEPTION_ACCESS_VIOLATION, self.ExceptionHandler)
         #self.dbg.get_debug_privileges()
 
         self.dbg.load(self.exe_name, self.argument)
@@ -107,25 +111,39 @@ class fuzzer():
         self.dbg.run()
         return
 
-    def DebuggerMornitor(self):
+    def DebuggerMonitor(self):
 
+        self.monitor_status = MONITOR_RUNNING
+
+        # Wait crash for wait-seconds...
         time.sleep(self.waitseconds)
 
-        if self.fuzzer_status != CRASH_OCCURED:
-            self.dbg.terminate_process()
-            self.pid = None
-            self.fuzzer_status = DBG_NOT_RUNNING
+        if self.DBG_status != CRASH_OCCURED:    # If crash is not occured...
+            try:
+                self.dbg.terminate_process()
+            except :
+                pass
+
+            self.targetpid = None
+            self.DBG_status = DBG_NOT_RUNNING
 
         else:
             print "[*] Crash Analyzing..."
-            while self.fuzzer_status == CRASH_OCCURED:
+            while self.DBG_status == CRASH_OCCURED:
                 time.sleep(1)
 
-        # TODO : restore below statement - Delete mutated-file
-        # self.mut_class.DeleteMutatedFile()
+        while True:
+            try:
+                #self.mut_class.DeleteMutatedFile()
+                break
+            except WindowsError, e:
+                print e
+                time.sleep(1)
+                continue
 
-        #self.mut_class = None
+        self.monitor_status = MONITOR_NOT_RUNNING
         return
+
 
     def Fuzz(self):
         while True:
@@ -133,7 +151,7 @@ class fuzzer():
             PrintLog("[*] Selecting seed file...\n")
             seed_filename = self.SelectSeed()
 
-            seed_abspath = self.seed_dirname + "\\" + seed_filename
+            seed_abspath = self.seed_dirname + seed_filename
             self.seed_stream = GetStream(seed_abspath)
 
             self.mut_class = mutation.mutation(self.seed_stream,
@@ -143,7 +161,7 @@ class fuzzer():
                                                self.fixed_offset_list,
                                                self.mutation_block_size)
 
-            #Devide Stream into Chunks
+            # Devide Stream into Chunks
             self.mut_class.DevideStreamIntoChunks()
 
             for i in range(0, self.iteration_per_seed):
@@ -154,19 +172,18 @@ class fuzzer():
 
     def FuzzCycle(self, seed_filename):
         while True:
-            if self.fuzzer_status == DBG_NOT_RUNNING:
+            if self.DBG_status == DBG_NOT_RUNNING and self.monitor_status == MONITOR_NOT_RUNNING:
                 PrintLog("[*] Mutating File : ")
 
                 #self.mut_class = mutation.mutation(self.seed_stream, self.mut_type, self.work_dirname, seed_filename, self.fixed_offset_list, self.mutation_block_size)
                 self.mut_class.FullyRandomizedMutation()
 
-                inputfilename = self.mut_class.mutated_filename
-                PrintLog(inputfilename)
+                PrintLog(self.mut_class.mutated_filename)
                 PrintLog(" done.\n")
                 PrintLog("[*] Starting debugger...\n")
 
                 # TODO : Revise - improve flexibiliy
-                self.argument = self.work_dirname + "\\" + self.mut_class.mutated_filename
+                self.argument = self.work_dirname + self.mut_class.mutated_filename
 
                 dbg_thread = threading.Thread(target = self.ProcessDebugger)
                 dbg_thread.setDaemon(0)
@@ -175,17 +192,23 @@ class fuzzer():
                 while self.targetpid == None:
                     time.sleep(1)
 
-                check_thread = threading.Thread(target = self.DebuggerMornitor)
+                check_thread = threading.Thread(target = self.DebuggerMonitor)
                 check_thread.setDaemon(0)
                 check_thread.start()
 
                 self.iteration = self.iteration + 1
-
-                return
             else:
-                time.sleep(self.waitseconds)
+                break
+
+        while self.DBG_status >= DBG_RUNNING or self.monitor_status == MONITOR_RUNNING:
+            time.sleep(self.waitseconds)
+
+        return
+
 
     def SelectSeed(self):
+    # Select Seed from seed directory.
+    # It can be configured at config.JSON file.
         seedlist = os.listdir(self.seed_dirname)
         return seedlist[random.randint(0, len(seedlist) - 1)]
 

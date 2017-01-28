@@ -5,6 +5,11 @@ def PrintLog(str):
     return
 
 
+def BackSlashWrapper(str):
+    if str[-1] != '\\':
+        return str + '\\'
+    return str
+
 import json
 
 def GetValueFromConfigFile(key):

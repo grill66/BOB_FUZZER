@@ -18,13 +18,12 @@ class mutation():
         self.work_dirname = work_dirname
         self.fixed_offset_list = fixed_offset_list
         self.input_file_name = input_file_name
-
         self.mutated_filename = ""
         self.mut_result_stream = ""
 
-        self.mutation_block_size = mutation_block_size
-        self.mutation_chunk_list = []
-        self.mutatable_check_list = []
+        self.mutation_block_size    = mutation_block_size
+        self.mutation_chunk_list    = []
+        self.mutatable_check_list   = []
 ###     @stream               : File stream of seed file.
 ###     @mut_type             : Mutation type of
 ###     @seed_name            : Absolute path of seed file.
@@ -49,7 +48,7 @@ class mutation():
 
         # Saves Mutated file
         self.mutated_filename = misc.GetMD5HashFromString(self.mut_result_stream) + '.' + self.input_file_name.split('.')[-1]
-        with open(self.work_dirname + "\\" + self.mutated_filename, "wb") as f:
+        with open(self.work_dirname + self.mutated_filename, "wb") as f:
             f.write(self.mut_result_stream)
 
         return
@@ -57,7 +56,7 @@ class mutation():
     def MutateChunkList(self):
         # Mutate each chunk in mutation_chunk_list
         for i in range(0, len(self.mutation_chunk_list)):
-            if self.mutatable_check_list[i] == True:
+            if self.mutatable_check_list[i] == True and random.randint(0, 1) == 1:
                 # Mutate and Add
                 self.mut_result_stream += self.MutateData(self.mutation_chunk_list[i])
             else:
@@ -78,7 +77,7 @@ class mutation():
             for i in range(0, len(self.fixed_offset_list)):
                 # TODO : avoid offset
                 # Add stream curoffset to fixed_offset_list[i]["start"] into chunk list...
-                print curoffset
+                #print curoffset
                 self.AddMutationBlockToList(self.input_file_stream[ curoffset : self.fixed_offset_list[i]["start"]])
 
                 self.mutation_chunk_list += [ self.input_file_stream[self.fixed_offset_list[i]["start"]:self.fixed_offset_list[i]["end"] + 1] ]
@@ -87,10 +86,9 @@ class mutation():
                 curoffset = self.fixed_offset_list[i]["end"] + 1
 
             # Add rest into chunk list
-            print curoffset
             self.AddMutationBlockToList(self.input_file_stream[curoffset:])
-            print "\n", len(self.mutatable_check_list)
-            print self.mutatable_check_list
+            #print "\n", len(self.mutatable_check_list)
+            #print self.mutatable_check_list
 
             return
 
@@ -106,11 +104,8 @@ class mutation():
         if streamsize <= self.mutation_block_size:
             self.mutation_chunk_list = self.mutation_chunk_list + [stream[curoffset:]]
             self.mutatable_check_list = self.mutatable_check_list + [True]
-            #print "less : ", streamsize
-            return
-# 0 1 2 3 4 5 6
-# 7     4
 
+            return
 
         else:
             while curoffset + self.mutation_block_size + 1 < streamsize:
@@ -124,17 +119,21 @@ class mutation():
 
         return
 
-
-
     def MutateData(self, string):
         # (1) Addition
         # (2) Change
-        # (3) Suppression
+        # (3) Compression
+        # TODO : restore mutation logic
+        #result = string
         result = "".join(i if random.randint(0, 1) else misc.MUTATION_BYTE_TABLE[random.randint(0, 0xff)] for i in string)
         return result
 
+
+
     def DeleteMutatedFile(self):
-        os.remove(self.work_dirname + "\\" + self.mutated_filename)
+### Delete mutation result file
+
+        os.remove(self.work_dirname + self.mutated_filename)
         return
 
 
