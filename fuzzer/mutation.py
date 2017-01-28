@@ -25,11 +25,11 @@ class mutation():
         self.mutation_block_size = mutation_block_size
         self.mutation_chunk_list = []
         self.mutatable_check_list = []
-# @stream               : File stream of seed file.
-# @mut_type             : Mutation type of
-# @seed_name            : Absolute path of seed file.
-# @work_dirname         : Working directory-name on which mutation task would be processed.
-# @fixed_offset_list    : offset list. File data within these offsets should be unchanged after mutation. This option can be set via editing config.JSON file at home directory of fuzzer
+###     @stream               : File stream of seed file.
+###     @mut_type             : Mutation type of
+###     @seed_name            : Absolute path of seed file.
+###     @work_dirname         : Working directory-name on which mutation task would be processed.
+###     @fixed_offset_list    : offset list. File data within these offsets should be unchanged after mutation. This option can be set via editing config.JSON file at home directory of fuzzer
 
         return
 
@@ -41,11 +41,11 @@ class mutation():
 
 
         # TODO : Complete muation process...
-        # DevideStreamIntoChunks => makes mutation_chunk_list and mutatable_chunk_list
-        # MutateChunkList => Mutate Each Chunk and concatenate them
-        #
-
-
+###     DevideStreamIntoChunks => makes mutation_chunk_list and mutatable_chunk_list
+###     MutateChunkList => Mutate Each Chunk and concatenate them
+###
+        #self.DevideStreamIntoChunks()
+        self.MutateChunkList()
 
         # Saves Mutated file
         self.mutated_filename = misc.GetMD5HashFromString(self.mut_result_stream) + '.' + self.input_file_name.split('.')[-1]
@@ -66,28 +66,39 @@ class mutation():
 
 
     def DevideStreamIntoChunks(self):
-        # Devide Stream
-        # chunk :
-        # @mutatable_chunk_list[i] => Is mutation_chunk_list[i] is mutatable?? It has True or False.
+###     Devide Stream and adds devided stream to chunk list
+###     chunk : mutation unit. it consists of string
+###     @mutatable_chunk_list[i] => Is mutation_chunk_list[i] is mutatable?? It has True or False.
 
         if self.fixed_offset_list == []:
             self.AddMutationBlockToList(self.input_file_stream)
-
+            return
         else:
+            curoffset = 0
             for i in range(0, len(self.fixed_offset_list)):
                 # TODO : avoid offset
-                # devide
-                # add fixed_offset chunk : mutatable = False
-                return
+                # Add stream curoffset to fixed_offset_list[i]["start"] into chunk list...
+                print curoffset
+                self.AddMutationBlockToList(self.input_file_stream[ curoffset : self.fixed_offset_list[i]["start"]])
 
-        return
+                self.mutation_chunk_list += [ self.input_file_stream[self.fixed_offset_list[i]["start"]:self.fixed_offset_list[i]["end"] + 1] ]
+                self.mutatable_check_list += [False]
 
+                curoffset = self.fixed_offset_list[i]["end"] + 1
+
+            # Add rest into chunk list
+            print curoffset
+            self.AddMutationBlockToList(self.input_file_stream[curoffset:])
+            print "\n", len(self.mutatable_check_list)
+            print self.mutatable_check_list
+
+            return
 
     def AddMutationBlockToList(self, stream):
-        # Usually called by DevideStream function.
-        # It devides passed parameter stream into several blocks
-        # Block-size of each chunk is specified at config.JSON file.
-        # @mutation_chunk_list : This list will contain several chunks of stream
+###     Usually called by DevideStream function.
+###     It devides passed parameter stream into several blocks
+###     Block-size of each chunk is specified at config.JSON file.
+###     @mutation_chunk_list : This list will contain several chunks of stream
 
         curoffset = 0
         streamsize = len(stream)
@@ -95,17 +106,21 @@ class mutation():
         if streamsize <= self.mutation_block_size:
             self.mutation_chunk_list = self.mutation_chunk_list + [stream[curoffset:]]
             self.mutatable_check_list = self.mutatable_check_list + [True]
-
+            #print "less : ", streamsize
             return
+# 0 1 2 3 4 5 6
+# 7     4
+
 
         else:
-            while curoffset + self.mutation_block_size < streamsize:
+            while curoffset + self.mutation_block_size + 1 < streamsize:
+                #print curoffset
                 self.mutation_chunk_list = self.mutation_chunk_list + [ stream[curoffset:curoffset + self.mutation_block_size] ]
                 self.mutatable_check_list = self.mutatable_check_list + [True]
-                curoffset = curoffset + self.mutation_block_size
+                curoffset += self.mutation_block_size
 
-            self.mutation_chunk_list = self.mutation_chunk_list + [ stream[curoffset:] ]
-            self.mutatable_check_list = self.mutatable_check_list + [True]
+            self.mutation_chunk_list    = self.mutation_chunk_list + [ stream[curoffset:] ]
+            self.mutatable_check_list   = self.mutatable_check_list + [True]
 
         return
 

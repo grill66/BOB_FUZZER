@@ -107,7 +107,7 @@ class fuzzer():
         self.dbg.run()
         return
 
-    def CrashChecker(self):
+    def DebuggerMornitor(self):
 
         time.sleep(self.waitseconds)
 
@@ -124,7 +124,7 @@ class fuzzer():
         # TODO : restore below statement - Delete mutated-file
         # self.mut_class.DeleteMutatedFile()
 
-        self.mut_class = None
+        #self.mut_class = None
         return
 
     def Fuzz(self):
@@ -136,16 +136,28 @@ class fuzzer():
             seed_abspath = self.seed_dirname + "\\" + seed_filename
             self.seed_stream = GetStream(seed_abspath)
 
+            self.mut_class = mutation.mutation(self.seed_stream,
+                                               self.mut_type,
+                                               self.work_dirname,
+                                               seed_abspath,
+                                               self.fixed_offset_list,
+                                               self.mutation_block_size)
+
+            #Devide Stream into Chunks
+            self.mut_class.DevideStreamIntoChunks()
+
             for i in range(0, self.iteration_per_seed):
                 PrintLog("[*] Starting Fuzz Cycle(Itration : %d)\n" % self.iteration)
                 self.FuzzCycle(seed_abspath)
+
+            self.mut_class = None
 
     def FuzzCycle(self, seed_filename):
         while True:
             if self.fuzzer_status == DBG_NOT_RUNNING:
                 PrintLog("[*] Mutating File : ")
 
-                self.mut_class = mutation.mutation(self.seed_stream, self.mut_type, self.work_dirname, seed_filename, self.fixed_offset_list)
+                #self.mut_class = mutation.mutation(self.seed_stream, self.mut_type, self.work_dirname, seed_filename, self.fixed_offset_list, self.mutation_block_size)
                 self.mut_class.FullyRandomizedMutation()
 
                 inputfilename = self.mut_class.mutated_filename
@@ -163,7 +175,7 @@ class fuzzer():
                 while self.targetpid == None:
                     time.sleep(1)
 
-                check_thread = threading.Thread(target = self.CrashChecker)
+                check_thread = threading.Thread(target = self.DebuggerMornitor)
                 check_thread.setDaemon(0)
                 check_thread.start()
 

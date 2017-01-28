@@ -9,12 +9,20 @@
   "iteration_per_seed": 5,
 
   "fixed_offset_list": [
+    {
+      "start":100,
+      "end":200
+    },
+    {
+      "start":500,
+      "end":600
+    }
 
   ],
 
   "argument" : "C:\\Users\\user\\Desktop\\sample3_2.cell",
   "waitseconds":3,
-  "mut_type" : 0
+  "mut_type" : 0,
   "mutation_block_size" : 1024
 
 }
