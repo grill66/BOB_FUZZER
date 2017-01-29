@@ -3,7 +3,8 @@ from misc import *
 
 
 def main():
-    print "**** FUZZER ****"
+    print "****** FUZZER ******"\
+
     PrintLog("[*] Creating Class Object...")
 
     _fuzzer = fuzzer.fuzzer()

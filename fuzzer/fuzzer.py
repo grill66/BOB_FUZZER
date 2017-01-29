@@ -1,5 +1,7 @@
 from misc import *
 import mutation
+import proc_manager
+
 
 from pydbg import *
 from pydbg.defines import *
@@ -17,13 +19,14 @@ import random
 DBG_NOT_RUNNING     = 0x0
 DBG_RUNNING         = 0x1
 CRASH_OCCURED       = 0x2
+PROCESSING_CRASH    = 0x3
 
 
 MONITOR_NOT_RUNNING = 0x0
 MONITOR_RUNNING     = 0x1
 
 
-class fuzzer():
+class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
 
     def __init__(self):
 
@@ -62,54 +65,6 @@ class fuzzer():
 
         return
 
-    def ExceptionHandler(self, dbg):
-
-        if dbg.dbg.u.Exception.dwFirstChance:
-            return DBG_EXCEPTION_NOT_HANDLED
-
-        print "Crash"
-
-        self.DBG_status = CRASH_OCCURED
-
-        ## Record Crash Information
-        crash_bin = utils.crash_binning.crash_binning()
-        crash_bin.record_crash(dbg)
-        self.crash = crash_bin.crash_synopsis()
-
-        curtime = datetime.datetime.today()
-        crash_dirname = "[%d.%02d.%02d_%02d_%02d_%02d]" \
-                          % (curtime.year, curtime.month, curtime.day, curtime.hour, curtime.minute, curtime.second)
-
-        os.mkdir(".\\crashes\\" + crash_dirname)
-
-        # Save Crash Info
-        crashinfo_fp = open("crashes\\" + crash_dirname + "\\" + self.mut_class.mutated_filename.split('.')[0] + ".log", "wb")
-        crashinfo_fp.write(self.crash)
-        crashinfo_fp.close()
-
-        # Save Crash-causing file
-        shutil.copy(self.work_dirname + self.mut_class.mutated_filename, "crashes\\" + crash_dirname + "\\" + self.mut_class.mutated_filename)
-
-        self.dbg.terminate_process()
-        self.DBG_status = DBG_NOT_RUNNING
-        self.targetpid = None
-
-        return DBG_EXCEPTION_NOT_HANDLED
-
-    def ProcessDebugger(self):
-
-        self.DBG_status = DBG_RUNNING
-
-        self.dbg = pydbg()
-
-        self.dbg.set_callback(EXCEPTION_ACCESS_VIOLATION, self.ExceptionHandler)
-        #self.dbg.get_debug_privileges()
-
-        self.dbg.load(self.exe_name, self.argument)
-
-        self.targetpid = self.dbg.pid
-        self.dbg.run()
-        return
 
     def DebuggerMonitor(self):
 
@@ -118,7 +73,7 @@ class fuzzer():
         # Wait crash for wait-seconds...
         time.sleep(self.waitseconds)
 
-        if self.DBG_status != CRASH_OCCURED:    # If crash is not occured...
+        if self.DBG_status < CRASH_OCCURED:    # If crash is not occured...
             try:
                 self.dbg.terminate_process()
             except :
@@ -132,9 +87,44 @@ class fuzzer():
             while self.DBG_status == CRASH_OCCURED:
                 time.sleep(1)
 
+
+            # move mutated file to crashes
+            curtime = datetime.datetime.today()
+            crash_dirname = "[%d.%02d.%02d_%02d_%02d_%02d]" \
+                            % (
+                            curtime.year, curtime.month, curtime.day, curtime.hour, curtime.minute, curtime.second)
+
+            PrintLog("[*] Saving crash...DIR : "+crash_dirname + "...")
+
+            os.mkdir(".\\crashes\\" + crash_dirname)
+
+            # Save Crash Info
+            crashinfo_fp = open(
+                "crashes\\" + crash_dirname + "\\" + self.mut_class.mutated_filename.split('.')[0] + ".log", "wb")
+            crashinfo_fp.write(self.crash_info)
+
+            crashinfo_fp.write("len chunk list : %d, apply list : %d\n" \
+                               % (len(self.mut_class.mut_chunk_list), len(self.mut_class.mut_apply_list)))
+
+            for i in self.mut_class.mut_apply_list:
+                crashinfo_fp.write("%d, " % i)
+
+            crashinfo_fp.close()
+
+            # Save Crash-causing file
+            shutil.copy(self.work_dirname + self.mut_class.mutated_filename,
+                        "crashes\\" + crash_dirname + "\\" + self.mut_class.mutated_filename)
+
+            PrintLog("done\n")
+
+            self.DBG_status  = DBG_NOT_RUNNING
+
+            # Minimize crash file...
+            self.mut_class.Minimize()
+
         while True:
             try:
-                #self.mut_class.DeleteMutatedFile()
+                self.mut_class.DeleteMutatedFile()
                 break
             except WindowsError, e:
                 print e
@@ -165,7 +155,7 @@ class fuzzer():
             self.mut_class.DevideStreamIntoChunks()
 
             for i in range(0, self.iteration_per_seed):
-                PrintLog("[*] Starting Fuzz Cycle(Itration : %d)\n" % self.iteration)
+                PrintLog("[*] Starting Fuzz Cycle (Itration : %d)\n" % self.iteration)
                 self.FuzzCycle(seed_abspath)
 
             self.mut_class = None
@@ -185,22 +175,24 @@ class fuzzer():
                 # TODO : Revise - improve flexibiliy
                 self.argument = self.work_dirname + self.mut_class.mutated_filename
 
-                dbg_thread = threading.Thread(target = self.ProcessDebugger)
-                dbg_thread.setDaemon(0)
-                dbg_thread.start()
+                debugger_thread = threading.Thread(target = self.ExecuteProcess)
+                debugger_thread.setDaemon(0)
+                debugger_thread.start()
 
-                while self.targetpid == None:
+                while self.targetpid == None:   # wait until debugger attaches to target process
                     time.sleep(1)
 
-                check_thread = threading.Thread(target = self.DebuggerMonitor)
-                check_thread.setDaemon(0)
-                check_thread.start()
+                monitor_thread = threading.Thread(target = self.DebuggerMonitor)
+                monitor_thread.setDaemon(0)
+                monitor_thread.start()
 
                 self.iteration = self.iteration + 1
             else:
                 break
 
-        while self.DBG_status >= DBG_RUNNING or self.monitor_status == MONITOR_RUNNING:
+        # Wait until DBG thread and monitor thread are terminated...
+        while self.DBG_status >= DBG_RUNNING or self.monitor_status >= MONITOR_RUNNING:
+
             time.sleep(self.waitseconds)
 
         return
