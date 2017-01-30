@@ -224,8 +224,8 @@ class mutation():
 
         # Minimize done...
         copy(self.work_dirname + "min." + self.mut_class.mutated_filename.split('.')[-1],
-             "crashes\\" + self.crash_dirname + "\\" + self.mut_class.mutated_filename.split('.')[0]
-             + "_minimized." + self.mut_class.mutated_filename.split('.')[-1])
+             "crashes\\" + self.crash_dirname + "\\" + self.mutated_filename.split('.')[0]
+             + "_minimized." + self.mutated_filename.split('.')[-1])
 
         self.need_minimize = False
 
