@@ -48,6 +48,7 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
         self.seed_stream = ""
 
         self.mut_class = None
+        self.need_minimize = False
 
         return
 
@@ -75,7 +76,7 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
 
         if self.DBG_status < CRASH_OCCURED:    # If crash is not occured...
             try:
-                self.dbg.terminate_process()
+                self.dbg.terminate_process() # dbg : Inherited from proc_manager
             except :
                 pass
 
@@ -114,20 +115,20 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
             # Save Crash-causing file
             shutil.copy(self.work_dirname + self.mut_class.mutated_filename,
                         "crashes\\" + crash_dirname + "\\" + self.mut_class.mutated_filename)
+            self.mut_class.crash_dirname = crash_dirname
 
             PrintLog("done\n")
 
-            self.DBG_status  = DBG_NOT_RUNNING
 
-            # Minimize crash file...
-            self.mut_class.Minimize()
+            self.DBG_status  = DBG_NOT_RUNNING
+            self.need_minimize = True
 
         while True:
             try:
                 self.mut_class.DeleteMutatedFile()
                 break
             except WindowsError, e:
-                print e
+                #print e
                 time.sleep(1)
                 continue
 
@@ -168,6 +169,19 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
                 #self.mut_class = mutation.mutation(self.seed_stream, self.mut_type, self.work_dirname, seed_filename, self.fixed_offset_list, self.mutation_block_size)
                 self.mut_class.FullyRandomizedMutation()
 
+                # TODO : Delete below statements...
+                #self.mut_class.mut_apply_list = [0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1]
+
+                #f = open("C:\\Users\\user\\Desktop\\BOB_FUZZER\\fuzzer\\crashes\\[2017.01.29_20_37_57]\\crash.xls", "rb")
+                #self.mut_class.mut_result_stream = f.read()
+                #f.close()
+                #self.mut_class.waitseconds = self.waitseconds
+                #self.mut_class.exe_name = self.exe_name
+                #self.mut_class.Minimize()
+
+                #return
+                # TODO : TO here
+
                 PrintLog(self.mut_class.mutated_filename)
                 PrintLog(" done.\n")
                 PrintLog("[*] Starting debugger...\n")
@@ -192,8 +206,13 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
 
         # Wait until DBG thread and monitor thread are terminated...
         while self.DBG_status >= DBG_RUNNING or self.monitor_status >= MONITOR_RUNNING:
-
             time.sleep(self.waitseconds)
+
+        if self.need_minimize == True:
+            # Minimize crash file...
+            self.mut_class.waitseconds = self.waitseconds
+            self.mut_class.exe_name = self.exe_name
+            self.mut_class.Minimize()
 
         return
 

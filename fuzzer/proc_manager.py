@@ -38,7 +38,7 @@ class debugger():
         if dbg.dbg.u.Exception.dwFirstChance:
             return DBG_EXCEPTION_NOT_HANDLED
 
-        print "Crash"
+        print "[*] Crash...!!"
 
         self.DBG_status = CRASH_OCCURED
 
