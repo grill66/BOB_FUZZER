@@ -19,6 +19,13 @@ MONITOR_NOT_RUNNING = 0x0
 MONITOR_RUNNING     = 0x1
 
 
+MUTATION_BYTE_TABLE = ""
+
+
+for i in range (0, 0x100):
+    tmp = "%02x" % i
+    MUTATION_BYTE_TABLE = MUTATION_BYTE_TABLE + tmp.decode("hex")
+
 
 class mutation():
 
@@ -223,11 +230,13 @@ class mutation():
                 print "[*] Not Mutated chunk...", curoffset
 
         # Minimize done...
-        copy(self.work_dirname + "min." + self.mut_class.mutated_filename.split('.')[-1],
+        copy(self.work_dirname + "min." + self.mutated_filename.split('.')[-1],
              "crashes\\" + self.crash_dirname + "\\" + self.mutated_filename.split('.')[0]
              + "_minimized." + self.mutated_filename.split('.')[-1])
 
-        self.need_minimize = False
+
+        self.mut_apply_list = []
+        self.mut_result_stream = None
 
         return
 
@@ -257,7 +266,7 @@ class mutation():
         block_size = pow(4, int(log(len(input_block) - 1, 4)))  # block size is 4^n
 
         if block_size <= 4:
-            print "blk size <= 4"
+            #print "blk size <= 4"
             return
 
         else:

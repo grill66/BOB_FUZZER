@@ -213,6 +213,7 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
             self.mut_class.waitseconds = self.waitseconds
             self.mut_class.exe_name = self.exe_name
             self.mut_class.Minimize()
+            self.need_minimize = False
 
         return
 

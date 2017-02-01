@@ -12,8 +12,11 @@
     {
       "start":0,
       "end":1023
+    },
+    {
+      "start":1500,
+      "end":1700
     }
-
   ],
 
   "argument" : "C:\\Users\\user\\Desktop\\sample3_2.cell",
