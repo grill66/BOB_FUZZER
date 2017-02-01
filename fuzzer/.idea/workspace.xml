@@ -15,21 +15,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="xml_fuzzer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/xml_fuzzer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="proc_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/proc_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="40" column="30" lean-forward="false" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+            <state relative-caret-position="-381">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -37,14 +27,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fuzzer.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="fuzzer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fuzzer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="214" column="37" lean-forward="false" selection-start-line="214" selection-start-column="37" selection-end-line="214" selection-end-column="37" />
+            <state relative-caret-position="396">
+              <caret line="22" column="25" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#1041#1782#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -53,9 +42,21 @@
       <file leaf-file-name="misc.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/misc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="50" selection-end-column="65" />
+            <state relative-caret-position="699">
+              <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="10" column="23" lean-forward="false" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -63,20 +64,23 @@
       <file leaf-file-name="mutation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mutation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="236" column="0" lean-forward="false" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
+            <state relative-caret-position="392">
+              <caret line="59" column="33" lean-forward="false" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#5952#6059#0" expanded="false" />
+                <element signature="e#6087#9066#0" expanded="false" />
+                <element signature="e#13352#14081#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.JSON" pinned="false" current-in-tab="true">
+      <file leaf-file-name="config.JSON" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.JSON">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="23" column="17" lean-forward="true" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
+            <state relative-caret-position="396">
+              <caret line="22" column="18" lean-forward="false" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -102,22 +106,24 @@
       <find>DBG_status</find>
       <find>active</find>
       <find>Minimize</find>
+      <find>input_file_apspath</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/misc.py" />
         <option value="$PROJECT_DIR$/crashes/[2017.01.29_01_12_03]/a0c2b8f629dc94aefb3e2cba0bc2d690.log" />
         <option value="$PROJECT_DIR$/debugger.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/crashes/[2017.01.29_20_37_57]/bf5c89346a60655c0f0575f159306ecf.log" />
-        <option value="$PROJECT_DIR$/proc_manager.py" />
         <option value="$PROJECT_DIR$/xml_fuzzer.py" />
-        <option value="$PROJECT_DIR$/fuzzer.py" />
-        <option value="$PROJECT_DIR$/mutation.py" />
+        <option value="$PROJECT_DIR$/compression.py" />
+        <option value="$PROJECT_DIR$/misc.py" />
         <option value="$PROJECT_DIR$/config.JSON" />
+        <option value="$PROJECT_DIR$/proc_manager.py" />
+        <option value="$PROJECT_DIR$/mutation.py" />
+        <option value="$PROJECT_DIR$/fuzzer.py" />
       </list>
     </option>
   </component>
@@ -142,7 +148,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -185,7 +191,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,6 +246,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="fuzzer" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/xml_fuzzer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="compression" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="fuzzer" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/compression.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -378,16 +401,18 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.main" />
       <item index="1" class="java.lang.String" itemvalue="Python.test" />
       <item index="2" class="java.lang.String" itemvalue="Python.xml_fuzzer" />
+      <item index="3" class="java.lang.String" itemvalue="Python.compression" />
     </list>
     <recent_temporary>
-      <list size="3">
+      <list size="4">
         <item index="0" class="java.lang.String" itemvalue="Python.main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.xml_fuzzer" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test" />
+        <item index="1" class="java.lang.String" itemvalue="Python.compression" />
+        <item index="2" class="java.lang.String" itemvalue="Python.xml_fuzzer" />
+        <item index="3" class="java.lang.String" itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -441,13 +466,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="19" />
+      <option name="time" value="20" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.29_08_53_43]/99dd1d9dbd715cea9e68392a3a8284f8.log" />
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.29_08_41_36]/f3c40bedf885ab878bb1cd39f323fdf6.log" />
     <entry file="file://$PROJECT_DIR$/crashes/[2017.01.28_23_02_13]/5f9aef6e078b219fdf67141de815ddb2.log" />
     <entry file="file://$PROJECT_DIR$/crashes/[2017.01.29_05_21_08]/5848b7ab1bb110b378a7cfd257374124.log" />
     <entry file="file://$PROJECT_DIR$/crashes/[2017.01.29_07_42_38]/512f3dfef86f32e8f54e088c5e2bee80.log" />
@@ -488,120 +511,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="10" column="23" lean-forward="false" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/work/HWP.hml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="29182" lean-forward="false" selection-start-line="0" selection-start-column="29182" selection-end-line="0" selection-end-column="29182" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_01_35_13]/81e9c4e4b3794acfac6d05300f3fe031.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_13_39_31]/0ce5d0b73ec686ee412d4ec083ed6fba.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-216">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_14_05_27]/a3ebb474999f09edae7117008abfc6c9.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_13_11_58]/e194c3d6b85823b5682d913264def2e5.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mutation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="236" column="0" lean-forward="false" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/misc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="50" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/work/HWP.hml" />
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_01_35_13]/81e9c4e4b3794acfac6d05300f3fe031.log" />
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_13_39_31]/0ce5d0b73ec686ee412d4ec083ed6fba.log" />
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_14_05_27]/a3ebb474999f09edae7117008abfc6c9.log" />
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_13_11_58]/e194c3d6b85823b5682d913264def2e5.log" />
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_16_14_10]/6f3bd771a381493f2084de249c96e2aa.log" />
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_16_52_06]/8362840177cfb80f8dd4183c6b769d88.log" />
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_17_16_38]/2afb0dde3ab4001909b9bcffd3eb4c86.log" />
     <entry file="file://$PROJECT_DIR$/xml_fuzzer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/proc_manager.py">
+    <entry file="file://$PROJECT_DIR$/compression.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="40" column="30" lean-forward="false" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fuzzer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="214" column="37" lean-forward="false" selection-start-line="214" selection-start-column="37" selection-end-line="214" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#1041#1782#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_16_14_10]/6f3bd771a381493f2084de249c96e2aa.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="555">
+          <caret line="54" column="111" lean-forward="false" selection-start-line="54" selection-start-column="111" selection-end-line="54" selection-end-column="111" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_16_52_06]/8362840177cfb80f8dd4183c6b769d88.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crashes/[2017.01.31_17_16_38]/2afb0dde3ab4001909b9bcffd3eb4c86.log">
+    <entry file="file://$PROJECT_DIR$/crashes/[2017.02.01_22_41_05]/0912e0f2abf15de5bf1fd2ef895f4f8c.log">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -611,9 +545,60 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config.JSON">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="23" column="17" lean-forward="true" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
+        <state relative-caret-position="396">
+          <caret line="22" column="18" lean-forward="false" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/proc_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-381">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="23" lean-forward="false" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mutation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="59" column="33" lean-forward="false" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#5952#6059#0" expanded="false" />
+            <element signature="e#6087#9066#0" expanded="false" />
+            <element signature="e#13352#14081#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/misc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="699">
+          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fuzzer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="25" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

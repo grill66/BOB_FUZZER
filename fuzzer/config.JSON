@@ -1,6 +1,6 @@
 {
 
-  "exe_name":"C:\\Program Files\\Hnc\\Office NEO\\HOffice96\\Bin\\HCell.exe",
+  "exe_name":"C:\\Program Files\\Hnc\\Hwp80\\Hwp.exe",
 
   "seed_dirname": ".\\seeds",
   "work_dirname": ".\\work",
@@ -19,9 +19,8 @@
     }
   ],
 
-  "argument" : "C:\\Users\\user\\Desktop\\sample3_2.cell",
+  "argument" : "",
   "waitseconds":2,
-  "mut_type" : 0,
   "mutation_block_size" : 1024
 
 }

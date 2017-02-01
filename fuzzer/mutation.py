@@ -12,7 +12,7 @@ from shutil import copy
 # Mutation Type, seedfile name,
 
 FULLY_RANDOMIZED_FUZZER = 0x0
-XML_FUZZER              = 0x1
+
 
 
 MONITOR_NOT_RUNNING = 0x0
@@ -29,37 +29,40 @@ for i in range (0, 0x100):
 
 class mutation():
 
-    def __init__(self, input_file_stream, mut_type, work_dirname, input_file_name, fixed_offset_list, mutation_block_size ):
+    def __init__(self, input_file_stream,  work_dirname, input_file_name, fixed_offset_list, mutation_block_size ):
 
         self.exe_name = ""
-
+        self.input_file_name = input_file_name
         self.input_file_stream = input_file_stream
-        self.mut_type = mut_type
-        self.input_file_apspath = os.path.abspath(input_file_name)
         self.work_dirname = work_dirname
         self.fixed_offset_list = fixed_offset_list
-        self.input_file_name = input_file_name
         self.mutated_filename = ""
-
         self.mut_result_stream = ""
 
-        self.waitseconds = None
+###     @exe_name               : Absolute path and exe name of executable
+###     @input_file_name        : Absolute path of input file. input_file_name is the target file for mutation.
+###     @input_file_stream      : File stream of input file.
+###     @work_dirname           : Working directory-name on which mutation task would be processed.
+###     @fixed_offset_list      : Offset list. File data within these offsets should be "UNCHANGED" after mutation.
+###                               This option can be set via editing config.JSON file at home directory of fuzzer
+###     @mutated_filename       : File name of mutated result file.
+###     @mutated_result_stream  : File stream of mutated result file(string).
 
+
+        self.waitseconds = None
         self.mut_block_size         = mutation_block_size
         self.mut_chunk_list         = []
         self.mutatable_check_list   = []
         self.mut_apply_list         = []
-###     @stream               : File stream of seed file.
-###     @mut_type             : Mutation type of
-###     @seed_name            : Absolute path of seed file.
-###     @work_dirname         : Working directory-name on which mutation task would be processed.
-###     @fixed_offset_list    : offset list. File data within these offsets should be unchanged after mutation. This option can be set via editing config.JSON file at home directory of fuzzer
 
+###     @waitseconds            : Maximum wait-seconds for checking crash
+###     @mut_block_size         : Mutation unit block size
+###     @mut_chunk_list         :
         self.minimize_hit = False
-
         self.monitor_status = MONITOR_NOT_RUNNING
-
         self.crash_dirname = ""
+
+
 
         return
 
@@ -71,13 +74,6 @@ class mutation():
 
         self.mut_apply_list = []
 
-
-
-        # TODO : Complete muation process...
-###     DevideStreamIntoChunks => makes mut_chunk_list and mutatable_chunk_list
-###     MutateChunkList => Mutate Each Chunk and concatenate them
-###
-        #self.DevideStreamIntoChunks()
         self.MutateChunkList()
 
         # Saves Mutated file
@@ -112,9 +108,8 @@ class mutation():
         else:
             curoffset = 0
             for i in range(0, len(self.fixed_offset_list)):
-                # TODO : avoid offset
-                # Add stream curoffset to fixed_offset_list[i]["start"] into chunk list...
-                #print curoffset
+            ### Avoid mutating fixed offset
+
                 self.AddMutationBlockToList(self.input_file_stream[ curoffset : self.fixed_offset_list[i]["start"]])
 
                 self.mut_chunk_list += [ self.input_file_stream[self.fixed_offset_list[i]["start"]:self.fixed_offset_list[i]["end"] + 1] ]
@@ -124,8 +119,7 @@ class mutation():
 
             # Add rest into chunk list
             self.AddMutationBlockToList(self.input_file_stream[curoffset:])
-            #print "\n", len(self.mutatable_check_list)
-            #print self.mutatable_check_list
+
 
             return
 
@@ -146,7 +140,6 @@ class mutation():
 
         else:
             while curoffset + self.mut_block_size + 1 < streamsize:
-                #print curoffset
                 self.mut_chunk_list         = self.mut_chunk_list + [ stream[curoffset:curoffset + self.mut_block_size] ]
                 self.mutatable_check_list   = self.mutatable_check_list + [True]
                 curoffset += self.mut_block_size
@@ -157,12 +150,23 @@ class mutation():
         return
 
     def MutateData(self, string):
-        # (1) Addition
-        # (2) Change
-        # (3) Compression
-        # TODO : restore mutation logic
-        #result = string
-        result = "".join(i if random.randint(0, 2) != 0 else misc.MUTATION_BYTE_TABLE[random.randint(0, 0xff)] for i in string)
+
+        result = string
+
+        #result = "".join(i if random.randint(0, 3) != 0 else MUTATION_BYTE_TABLE[random.randint(0, 0xff)] for i in string)
+        #return result
+
+        if len(string) < 10:
+            mut_number = random.randint(0, len(string))
+        else:
+            mut_number = mut_number = random.randint(0, len(string) / 10)
+
+        mut_idx_list = random.sample( range(0, len(string) - 1),  mut_number)
+
+        for idx in mut_idx_list: #idx - 1 is mutation target offset
+            result = string[:idx] + MUTATION_BYTE_TABLE[random.randint(0, 0xff)] + string[idx + 1:]
+
+
         return result
 
     def DeleteMutatedFile(self):
@@ -172,6 +176,9 @@ class mutation():
 
 
     def Minimize(self):
+
+### This function minimizes mut_result_stream
+
         self.min_stream = self.mut_result_stream
         curoffset = 0
 
@@ -242,8 +249,7 @@ class mutation():
 
 
     def CheckCrash(self):
-
-### It checks if minimized file cause crash
+### It checks if minimized file caused crash
 
         dbg_thread = threading.Thread(target=self.proc_dbg_class.ExecuteProcess)
         dbg_thread.setDaemon(0)
@@ -262,6 +268,8 @@ class mutation():
 
 
     def MinimizeChunk(self, input_block, chunk_offset):
+    #   Minimize input_block. chunk_offset is start offset of input_block in mutated file
+
         input_len = len(input_block)
         block_size = pow(4, int(log(len(input_block) - 1, 4)))  # block size is 4^n
 

@@ -5,8 +5,7 @@ from pydbg.defines import *
 
 
 import utils
-import time
-import threading
+
 
 #DBG thread status constants
 DBG_NOT_RUNNING         = 0x0

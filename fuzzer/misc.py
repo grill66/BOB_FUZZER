@@ -42,10 +42,3 @@ def GetStream(filename):
     return stream
 
 
-
-
-MUTATION_BYTE_TABLE = ""
-
-for i in range (0, 0x100):
-    tmp = "%02x" % i
-    MUTATION_BYTE_TABLE = MUTATION_BYTE_TABLE + tmp.decode("hex")

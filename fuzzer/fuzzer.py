@@ -3,11 +3,8 @@ import mutation
 import proc_manager
 
 
-from pydbg import *
-from pydbg.defines import *
 
 import threading
-import utils
 import datetime
 import os
 import shutil
@@ -37,6 +34,7 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
         self.seed_dirname = ""
         self.work_dirname = ""
 
+        # fixed offset list
         self.fixed_offset_list = []
 
         self.iteration = 0
@@ -61,14 +59,13 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
         self.fixed_offset_list      = GetValueFromConfigFile("fixed_offset_list")
         self.argument               = GetValueFromConfigFile("argument")
         self.waitseconds            = GetValueFromConfigFile("waitseconds")
-        self.mut_type               = GetValueFromConfigFile("mut_type")
         self.mutation_block_size    = GetValueFromConfigFile("mutation_block_size")
 
         return
 
 
     def DebuggerMonitor(self):
-
+    # Checks debugger if it has crash
         self.monitor_status = MONITOR_RUNNING
 
         # Wait crash for wait-seconds...
@@ -123,12 +120,13 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
             self.DBG_status  = DBG_NOT_RUNNING
             self.need_minimize = True
 
+
+        # After get crash, Delete mutated file...
         while True:
             try:
                 self.mut_class.DeleteMutatedFile()
                 break
             except WindowsError, e:
-                #print e
                 time.sleep(1)
                 continue
 
@@ -143,10 +141,12 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
             seed_filename = self.SelectSeed()
 
             seed_abspath = self.seed_dirname + seed_filename
+
+
+
             self.seed_stream = GetStream(seed_abspath)
 
             self.mut_class = mutation.mutation(self.seed_stream,
-                                               self.mut_type,
                                                self.work_dirname,
                                                seed_abspath,
                                                self.fixed_offset_list,
@@ -166,21 +166,8 @@ class fuzzer(proc_manager.debugger):    # Inherit class from proc_manager.py
             if self.DBG_status == DBG_NOT_RUNNING and self.monitor_status == MONITOR_NOT_RUNNING:
                 PrintLog("[*] Mutating File : ")
 
-                #self.mut_class = mutation.mutation(self.seed_stream, self.mut_type, self.work_dirname, seed_filename, self.fixed_offset_list, self.mutation_block_size)
+
                 self.mut_class.FullyRandomizedMutation()
-
-                # TODO : Delete below statements...
-                #self.mut_class.mut_apply_list = [0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1]
-
-                #f = open("C:\\Users\\user\\Desktop\\BOB_FUZZER\\fuzzer\\crashes\\[2017.01.29_20_37_57]\\crash.xls", "rb")
-                #self.mut_class.mut_result_stream = f.read()
-                #f.close()
-                #self.mut_class.waitseconds = self.waitseconds
-                #self.mut_class.exe_name = self.exe_name
-                #self.mut_class.Minimize()
-
-                #return
-                # TODO : TO here
 
                 PrintLog(self.mut_class.mutated_filename)
                 PrintLog(" done.\n")
